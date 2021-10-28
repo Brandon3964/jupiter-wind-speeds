@@ -10,6 +10,8 @@ import warnings
 from time import time
 import glob 
 
+import ray
+
 #BASIC
 
 def pixel2geographic(img, x, y):
@@ -390,7 +392,7 @@ def readZWP(path2wp, plotting=False):
         axs.set_ylim([-60,60])
 
     return A[:,0],A[:,1] 
-
+@ray.remote
 def v_maxcorr(lat, path2data=None, plotting=False, vstep=37):
     """
     Return velocity with maximum correlation in m/s at a particular latitude y (pix) for two images.
