@@ -1,5 +1,5 @@
 from zonalwind import *
-start = time.time()
+start = time()
 ray.init()
 path2data = './data2/'
 
@@ -30,7 +30,7 @@ for result in range(len(lats)):
     v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
 
 
-end = time.time()
+end = time()
 print("Program Runtime ", end - start)
 #Plot results along with currently accepted ZWP to compare. 
 path2wp = path2data + 'ZWP_j2016_PJ03.txt'
