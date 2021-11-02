@@ -32,6 +32,7 @@ print(latitude)
 #     v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
 
 
+
 # end = time()
 # print("Program Runtime ", end - start)
 # #Plot results along with currently accepted ZWP to compare. 
@@ -45,3 +46,4 @@ print(latitude)
 # axs.set_ylim([-60,60])
 # plt.show()
 # ray.shutdown()
+
