@@ -31,7 +31,7 @@ for result in range(len(lats)):
 
 
 end = time()
-print("Program Runtime ", end - start)
+print("Program Runtime(s) ", end - start)
 #Plot results along with currently accepted ZWP to compare. 
 path2wp = path2data + 'ZWP_j2016_PJ03.txt'
 lat_zwp, zwp = readZWP(path2wp) 
