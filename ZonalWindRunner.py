@@ -15,8 +15,13 @@ print(latitude)
 # Caveat, this only works if all the images have the same latitude cut off 
 
 #Generate an array of latitudes (pixels) and best velocities (m/s). 
-#for lat in latitude:
-lats = [-23.05,-23.00,-22.95,-22.90,-22.85,-22.80]
+
+current_lat = -70
+lats = []
+while current_lat < 70:
+    lats.append(current_lat)
+    current += 0.5
+
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
 for lat in lats:
@@ -25,10 +30,11 @@ for lat in lats:
     except:
         print("error at ", lat)
 
+print("Latitude", " Velocity")
 for result in range(len(lats)):
     cur_lat = lats[result]
     result_v = ray.get(obj_list[result])
-    print("Latitude",cur_lat, "velocity ", result_v)
+    print(cur_lat, " ", result_v)
     v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
 
 
