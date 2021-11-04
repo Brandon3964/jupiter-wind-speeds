@@ -20,7 +20,7 @@ current_lat = -70
 lats = []
 while current_lat < 70:
     lats.append(current_lat)
-    current += 0.5
+    current_lat += 0.5
 
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
