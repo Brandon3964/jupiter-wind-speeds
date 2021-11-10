@@ -3,20 +3,25 @@ start = time()
 ray.init()
 path2data = './data2/'
 
+
+
 #Get an array of latitudes from -70 to 70 degrees in increments of +0.05 to refer to when printing out latitudes below.
 images = glob.glob(path2data + '*.fits')
 image1 = images[0]
 hdulist = fits.open(image1) 
 lat_bot, lat_top, lat_step = hdulist[0].header['LAT_BOT'], hdulist[0].header['LAT_TOP'], hdulist[0].header['LAT_STEP']
 latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
-print(images)
-print(image1)
-print(latitude)
+
 # Caveat, this only works if all the images have the same latitude cut off 
 
 #Generate an array of latitudes (pixels) and best velocities (m/s). 
 #for lat in latitude:
-lats = [-23.05,-23.00,-22.95,-22.90,-22.85,-22.80]
+lats = []
+start = -65
+while start < 65:
+    start += 0.5
+    lats.append(start)
+print(lats)
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
 for lat in lats:
