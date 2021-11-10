@@ -15,7 +15,7 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 # Caveat, this only works if all the images have the same latitude cut off 
 
 #Generate an array of latitudes (pixels) and best velocities (m/s). 
-<<<<<<< HEAD
+
 #for lat in latitude:
 lats = []
 start = -65
