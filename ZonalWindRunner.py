@@ -1,5 +1,5 @@
 from zonalwind import *
-start = time()
+start_time = time()
 ray.init()
 path2data = './data2/'
 
@@ -40,7 +40,7 @@ for result in range(len(lats)):
 
 
 end = time()
-print("Program Runtime ", end - start)
+print("Program Runtime ", end - start_time)
 #Plot results along with currently accepted ZWP to compare. 
 path2wp = path2data + 'ZWP_j2016_PJ03.txt'
 lat_zwp, zwp = readZWP(path2wp) 
