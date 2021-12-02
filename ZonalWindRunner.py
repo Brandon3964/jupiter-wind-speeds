@@ -5,6 +5,8 @@ path2data = './201904/'
 
 
 
+
+
 #Get an array of latitudes from -70 to 70 degrees in increments of +0.05 to refer to when printing out latitudes below.
 images = glob.glob(path2data + '*.fits')
 image1 = images[0]
@@ -51,5 +53,6 @@ print("Program Runtime ", end - start_time)
 # axs.set_xlabel('Velocity (m/s)')
 # axs.set_ylim([-70,70])
 # plt.show()
+
 ray.shutdown()
 

@@ -419,7 +419,7 @@ def v_maxcorr(lat, path2data=None, plotting=False, vstep=37):
 
     #compute correlations for each slot
     for i in range(len(im_pairs)):
-        print(im_pairs[i][0], im_pairs[i][1])
+        #print(im_pairs[i][0], im_pairs[i][1])
         for j in range(len(vel_array)):
             correlations[i,j] = averaging_correlation_img_pair(lat, vel_array[j], im_pairs[i][0], im_pairs[i][1]) #account for averaging here!
         if plotting: 
