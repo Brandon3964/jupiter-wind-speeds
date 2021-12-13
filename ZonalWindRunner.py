@@ -1,7 +1,9 @@
 from zonalwind import *
 start_time = time()
 ray.init()
-path2data = './data2/'
+path2data = './201904/'
+
+
 
 
 
@@ -19,7 +21,7 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 #for lat in latitude:
 lats = []
 start = -65
-while start < 65:
+while start < -64:
     lats.append(start)
     start += 0.5
 v_corr = np.zeros_like(latitude)*np.nan
@@ -42,14 +44,15 @@ for result in range(len(lats)):
 end = time()
 print("Program Runtime ", end - start_time)
 #Plot results along with currently accepted ZWP to compare. 
-path2wp = path2data + 'ZWP_j2016_PJ03.txt'
-lat_zwp, zwp = readZWP(path2wp) 
-fig, axs = plt.subplots(1, 1,figsize=(8,4))
-axs.plot(zwp,lat_zwp,label='JT - ZWP')
-axs.plot(v_corr,latitude,label='DP')
-axs.set_ylabel('Latitude (deg)')
-axs.set_xlabel('Velocity (m/s)')
-axs.set_ylim([-70,70])
-plt.show()
+# path2wp = path2data + 'ZWP_j2016_PJ03.txt'
+# lat_zwp, zwp = readZWP(path2wp) 
+# fig, axs = plt.subplots(1, 1,figsize=(8,4))
+# axs.plot(zwp,lat_zwp,label='JT - ZWP')
+# axs.plot(v_corr,latitude,label='DP')
+# axs.set_ylabel('Latitude (deg)')
+# axs.set_xlabel('Velocity (m/s)')
+# axs.set_ylim([-70,70])
+# plt.show()
+
 ray.shutdown()
 
