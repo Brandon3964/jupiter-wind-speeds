@@ -1,9 +1,10 @@
+from re import A
 import astropy
 from astropy.io import fits
 import numpy as np 
 import matplotlib.pyplot as plt
 import math
-from math import sin, cos, sqrt, pi
+from math import sin, cos, sqrt, pi, tan
 
 import IPython
 import warnings
@@ -221,7 +222,9 @@ def advection(img1, img2, y, v):
 
     lat = pixel2geographic(img1, 1000, y)[1] #convert y to latitude (img, x value don't matter for trim)
     lat *= (pi / 180) #convert to radians
+    lat = graphic_to_cen(lat)
     
+
     time_diff = time_difference(img1, img2)
     delta_x = time_diff * v #get DISPLACEMENT (i.e. could be -ve) travelled for v in meters
 
@@ -239,6 +242,11 @@ def advection(img1, img2, y, v):
 
     return [lon_range_shifted, delta_lon]
 
+#In radian
+def graphic_to_cen(graphic_lat, a = 71492, b = 66854):
+    f = (a-b)/a
+    tan_cen = ((1-f)**2)*tan(graphic_lat)
+    return np.arctan(tan_cen)
 #CORRELATION
 
 def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
@@ -395,7 +403,7 @@ def readZWP(path2wp, plotting=False):
         axs.set_ylim([-60,60])
 
     return A[:,0],A[:,1] 
-@ray.remote
+@ray.remote(num_returns=2)
 def v_maxcorr(lat, path2data=None, plotting=False, vstep=37):
     """
     Return velocity with maximum correlation in m/s at a particular latitude y (pix) for two images.
@@ -436,3 +444,5 @@ def v_maxcorr(lat, path2data=None, plotting=False, vstep=37):
 
     #sum over all image pair correlations for each velocity; return the velocity with the highest correlation
     return vel_array[np.argmax(np.nansum(correlations, axis=0))]
+    #return vel_array, np.nansum(correlations, axis=0)
+
