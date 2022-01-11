@@ -19,11 +19,11 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 #Generate an array of latitudes (pixels) and best velocities (m/s). 
 
 #for lat in latitude:
-lats = []
-start = -65
-while start < -64:
-    lats.append(start)
-    start += 0.5
+lats = [10,20,30,40,50]
+# start = -65
+# while start < -64:
+#     lats.append(start)
+#     start += 0.5
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
 for lat in lats:

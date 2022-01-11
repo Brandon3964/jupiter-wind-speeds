@@ -173,10 +173,11 @@ def overlap_all(lat, v, path2data='./'):
             lon_range_1, lon_range_2 = advection(i, j, y, v)[0], np.linspace(round(lon_left_2, 2), round(lon_right_2, 2) - 0.05, 1601, endpoint=False)          
             if not overlap_slice(lon_range_1, lon_range_2):
                 continue
-            if time_difference(i, j)<0:
-                overlapping_images.append([i, j]) 
-            else: 
-                overlapping_images.append([j, i]) 
+            overlapping_images.append([i, j])
+            # if time_difference(i, j)<0:
+            #     overlapping_images.append([i, j]) 
+            # else: 
+            #     overlapping_images.append([j, i]) 
 
     #Return result
     return overlapping_images
@@ -222,7 +223,7 @@ def advection(img1, img2, y, v):
 
     lat = pixel2geographic(img1, 1000, y)[1] #convert y to latitude (img, x value don't matter for trim)
     lat *= (pi / 180) #convert to radians
-    lat = graphic_to_cen(lat)
+
     
 
     time_diff = time_difference(img1, img2)
@@ -245,8 +246,15 @@ def advection(img1, img2, y, v):
 #In radian
 def graphic_to_cen(graphic_lat, a = 71492, b = 66854):
     f = (a-b)/a
-    tan_cen = ((1-f)**2)*tan(graphic_lat)
+    tan_cen = ((1-f)**2)*np.tan(graphic_lat)
     return np.arctan(tan_cen)
+
+
+def cen_to_graphic(cen_lat, a = 71492, b = 66854):
+    f = (a-b)/a
+    tan_graphic = np.tan(cen_lat)/((1-f)**2)
+
+    return np.arctan(tan_graphic)
 #CORRELATION
 
 def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
