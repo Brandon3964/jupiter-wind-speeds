@@ -173,11 +173,10 @@ def overlap_all(lat, v, path2data='./'):
             lon_range_1, lon_range_2 = advection(i, j, y, v)[0], np.linspace(round(lon_left_2, 2), round(lon_right_2, 2) - 0.05, 1601, endpoint=False)          
             if not overlap_slice(lon_range_1, lon_range_2):
                 continue
-            overlapping_images.append([i, j])
-            # if time_difference(i, j)<0:
-            #     overlapping_images.append([i, j]) 
-            # else: 
-            #     overlapping_images.append([j, i]) 
+            if time_difference(i, j)<0:
+                overlapping_images.append([i, j]) 
+            else: 
+                overlapping_images.append([j, i]) 
 
     #Return result
     return overlapping_images
