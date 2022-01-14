@@ -1,6 +1,6 @@
 from zonalwind import *
 start_time = time()
-ray.init()
+ray.init(_node_ip_address="0.0.0.0")
 path2data = './new_201904/'
 
 
@@ -21,7 +21,7 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 #for lat in latitude:
 lats = []
 start = -65
-while start < 65:
+while start < 0:
     lats.append(start)
     start += 0.1
 v_corr = np.zeros_like(latitude)*np.nan
