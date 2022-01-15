@@ -21,8 +21,8 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 #for lat in latitude:
 lats = []
 start = -65
-while start < 0:
-    lats.append(start)
+while start < -55:
+    lats.append(round(start, 1))
     start += 0.1
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
