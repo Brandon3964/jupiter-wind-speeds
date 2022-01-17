@@ -54,5 +54,5 @@ print("Program Runtime ", end - start_time)
 # axs.set_ylim([-70,70])
 # plt.show()
 
-ray.shutdown()
+#ray.shutdown()
 
