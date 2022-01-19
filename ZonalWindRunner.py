@@ -21,9 +21,9 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 #for lat in latitude:
 lats = []
 start = -65
-while start < -64:
+while start < 65:
     lats.append(round(start, 1))
-    start += 0.5
+    start += 0.05
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
 for lat in lats:
@@ -35,9 +35,12 @@ for lat in lats:
 print("Latitude", " Velocity")
 for result in range(len(lats)):
     cur_lat = lats[result]
-    result_v = ray.get(obj_list[result])
-    print(cur_lat, " ", result_v)
-    v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
+    try:
+        result_v = ray.get(obj_list[result])
+        print(cur_lat, " ", result_v)
+        #v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
+    except:
+        print("error at ", cur_lat)
 
 
 
@@ -54,5 +57,5 @@ print("Program Runtime ", end - start_time)
 # axs.set_ylim([-70,70])
 # plt.show()
 
-#ray.shutdown()
+ray.shutdown()
 
