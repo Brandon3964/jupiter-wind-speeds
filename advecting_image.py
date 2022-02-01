@@ -24,7 +24,7 @@ for file in images:
 
     file1 = open('./full_201904_result.txt', 'r')
     count = 0
-# for other_img in copied_image:
+
     for line in file1:
         count += 1
         temp2 = (line.strip()).split()
@@ -33,13 +33,14 @@ for file in images:
 
     advected_rows = []
     full_deg = []
-    start = 0
-    while start < 360:
-        full_deg.append(round(start, 1))
-        start += 0.05
+    start = 360
+    while start > 0:
+        start = round(start, 2)
+        full_deg.append(start)
+        start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(np.interp(full_deg, result_lon[item], temp[item], left = np.nan, right = np.nan))
+        advected_rows.append(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1])
     hdul[0].data = advected_rows
     hdul.writeto(file,overwrite=True)
     file1.close()
