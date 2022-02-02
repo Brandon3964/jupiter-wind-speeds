@@ -1,5 +1,5 @@
 from zonalwind import *
-import shutil
+
 from astropy.io import fits
 path2data = './new_201904/'
 path2advected = './advected_data/'
@@ -23,13 +23,25 @@ for file in images:
 
 
     file1 = open('./full_201904_result.txt', 'r')
-    count = 0
-
+    velocity_tuple = []
+    
+    velocity_tuple = []
     for line in file1:
-        count += 1
         temp2 = (line.strip()).split()
-        y = geographic2pixel(advected_target, 0, float(temp2[0]))
-        result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
+        velocity_tuple.append((float(temp2[0]), float(temp2[1])))
+
+    velocity_tuple.reverse()
+    
+    for pair in velocity_tuple:
+        y = geographic2pixel(advected_target, 0, pair[0])
+        result_lon.append(advection(file, advected_target, y[1], pair[1])[0])
+
+
+
+    # for line in file1:
+    #     temp2 = (line.strip()).split()
+    #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
+    #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
 
     advected_rows = []
     full_deg = []
