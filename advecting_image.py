@@ -55,10 +55,8 @@ for file in images:
 
     for item in range(0, len(result_lon)):
         advected_rows.append(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1])
-        if mask[item] == np.nan:
-            advected_mask.append(0)
-        else:
-            advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = np.nan, right = np.nan)[::-1])
+
+        advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1])
 
     np.roll(advected_rows, 400)
     np.roll(advected_mask, 400)
