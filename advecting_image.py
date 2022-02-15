@@ -18,6 +18,7 @@ for file in images:
 
     hdul = fits.open(file)
     temp = hdul[0].data
+    mask = hdul[1].data
     result_lon = []
 
 
@@ -44,6 +45,7 @@ for file in images:
     #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
 
     advected_rows = []
+    advected_mask = []
     full_deg = []
     start = 360
     while start > 0:
@@ -53,7 +55,26 @@ for file in images:
 
     for item in range(0, len(result_lon)):
         advected_rows.append(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1])
+        if mask[item] == np.nan:
+            advected_mask.append(0)
+        else:
+            advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = np.nan, right = np.nan)[::-1])
+
+    np.roll(advected_rows, 400)
+    np.roll(advected_mask, 400)
+    advected_rows.append(advected_rows[0])
+    advected_mask.append(advected_mask[0])
+
     hdul[0].data = advected_rows
+    hdul[1].data = advected_mask
+    hdul[0].header['LON_LEFT'] = 340
+    hdul[0].header['LON_RIGH'] =-20
+    hdul[0].header['LAT_TOP'] = 65
+    hdul[0].header['LAT_BOT'] = -65
+    hdul[0].header['NAXSI1'] = 2620
+    hdul[0].header['NAXSI2'] =7221
+
+
     hdul.writeto(file,overwrite=True)
     file1.close()
     hdul.close()
