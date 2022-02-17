@@ -44,9 +44,9 @@ for file in images:
     #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
     #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
 
-    advected_rows = []
-    advected_mask = []
-    full_deg = []
+    advected_rows = np.array()
+    advected_mask = np.array()
+    full_deg = np.array()
     start = 360
     while start > 0:
         start = round(start, 2)
@@ -54,14 +54,14 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1])
+        np.append(advected_rows, np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1], 0)
 
-        advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1])
+        np.append(advected_rows, np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1], 0)
 
     np.roll(advected_rows, 400)
     np.roll(advected_mask, 400)
-    advected_rows.append(advected_rows[:,0], 1)
-    advected_mask.append(advected_mask[:,0], 1)
+    np.append(advected_rows, advected_rows[:,0], 1)
+    np.append(advected_mask, advected_mask[:,0], 1)
     
     print(np.size(advected_mask, 1))
 
