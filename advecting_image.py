@@ -62,6 +62,8 @@ for file in images:
     np.roll(advected_mask, 400)
     advected_rows.append(advected_rows[:,0], 1)
     advected_mask.append(advected_mask[:,0], 1)
+    
+    print(np.size(advected_mask, 1))
 
     hdul[0].data = advected_rows
     hdul[1].data = advected_mask
