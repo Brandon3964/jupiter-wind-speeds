@@ -60,8 +60,8 @@ for file in images:
 
     np.roll(advected_rows, 400)
     np.roll(advected_mask, 400)
-    advected_rows.append(advected_rows[0])
-    advected_mask.append(advected_mask[0])
+    advected_rows.append(advected_rows[:,0], 1)
+    advected_mask.append(advected_mask[:,0], 1)
 
     hdul[0].data = advected_rows
     hdul[1].data = advected_mask
@@ -69,8 +69,8 @@ for file in images:
     hdul[0].header['LON_RIGH'] =-20
     hdul[0].header['LAT_TOP'] = 65
     hdul[0].header['LAT_BOT'] = -65
-    hdul[0].header['NAXSI1'] = 2620
-    hdul[0].header['NAXSI2'] =7221
+    hdul[0].header['NAXSI1'] = 2601
+    hdul[0].header['NAXSI2'] =7201
 
 
     hdul.writeto(file,overwrite=True)
