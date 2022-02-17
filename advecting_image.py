@@ -46,7 +46,7 @@ for file in images:
 
     advected_rows = []
     advected_mask = []
-    full_deg = np.array()
+    full_deg = []
     start = 360
     while start > 0:
         start = round(start, 2)
@@ -58,13 +58,13 @@ for file in images:
 
         advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1])
 
-    advected_rwos = np.asarray(advected_rows)
+    advected_rows = np.asarray(advected_rows)
     advected_mask = np.asarray(advected_mask)
 
     np.roll(advected_rows, 400, 1)
     np.roll(advected_mask, 400, 1)
-    np.append(advected_rows, advected_rows[:,0], 1)
-    np.append(advected_mask, advected_mask[:,0], 1)
+    advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
+    advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
     
     print(np.size(advected_rows, 1))
     print(np.size(advected_rows, 0))
