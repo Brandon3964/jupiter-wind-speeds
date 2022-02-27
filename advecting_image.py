@@ -46,7 +46,7 @@ for file in images:
 
     advected_rows = []
     advected_mask = []
-    full_deg = np.array()
+    full_deg = []
     start = 360
     while start > 0:
         start = round(start, 2)
@@ -54,25 +54,23 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1])
+        advected_rows.append(np.mod(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1]), 360)
 
-        advected_mask.append(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1])
+        advected_mask.append(np.mod(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1]),360)
 
-    advected_rwos = np.asarray(advected_rows)
+    advected_rows = np.asarray(advected_rows)
     advected_mask = np.asarray(advected_mask)
 
-    np.roll(advected_rows, 400, 1)
-    np.roll(advected_mask, 400, 1)
+
     np.append(advected_rows, advected_rows[:,0], 1)
     np.append(advected_mask, advected_mask[:,0], 1)
     
-    print(np.size(advected_rows, 1))
-    print(np.size(advected_rows, 0))
+
 
     hdul[0].data = advected_rows
     hdul[1].data = advected_mask
-    hdul[0].header['LON_LEFT'] = 340
-    hdul[0].header['LON_RIGH'] =-20
+    hdul[0].header['LON_LEFT'] = 360
+    hdul[0].header['LON_RIGH'] =0
     hdul[0].header['LAT_TOP'] = 65
     hdul[0].header['LAT_BOT'] = -65
     hdul[0].header['NAXSI1'] = 2601
