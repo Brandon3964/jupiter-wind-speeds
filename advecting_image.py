@@ -54,9 +54,9 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(np.mod(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1]), 360)
+        advected_rows.append(np.mod(np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1], 360))
 
-        advected_mask.append(np.mod(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1]),360)
+        advected_mask.append(np.mod(np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0)[::-1],360))
 
     advected_rows = np.asarray(advected_rows)
     advected_mask = np.asarray(advected_mask)
