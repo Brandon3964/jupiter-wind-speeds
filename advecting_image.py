@@ -62,8 +62,8 @@ for file in images:
     advected_mask = np.asarray(advected_mask)
 
 
-    np.append(advected_rows, advected_rows[:,0], 1)
-    np.append(advected_mask, advected_mask[:,0], 1)
+    advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
+    advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
     
 
 
