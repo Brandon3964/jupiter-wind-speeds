@@ -54,8 +54,8 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        if result_lon[item][::-1] < 0:
-            print(1)
+
+        print(result_lon[item][::-1])
         #row_val = np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan)[::-1]
         #advected_rows.append(np.mod(row_val, 360, where= row_val != np.nan))
 
