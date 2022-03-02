@@ -42,52 +42,52 @@ for file in images:
 
 
 
-    # # for line in file1:
-    # #     temp2 = (line.strip()).split()
-    # #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
-    # #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
+    # for line in file1:
+    #     temp2 = (line.strip()).split()
+    #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
+    #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
 
-    # advected_rows = []
-    # advected_mask = []
-    # full_deg = []
-    # start = 360
-    # while start > 0:
-    #     start = round(start, 2)
-    #     full_deg.append(start)
-    #     start -= 0.05
+    advected_rows = []
+    advected_mask = []
+    full_deg = []
+    start = 360
+    while start > 0:
+        start = round(start, 2)
+        full_deg.append(start)
+        start -= 0.05
 
-    # for item in range(0, len(result_lon)):
-
-
-    #     row_val = np.interp(full_deg, np.mod(result_lon[item][::-1], 360), temp[item], left = np.nan, right = np.nan)[::-1]
-
-    #     advected_rows.append(row_val)
+    for item in range(0, len(result_lon)):
 
 
-    #     mask_val = np.interp(full_deg, np.mod(result_lon[item][::-1], 360), mask[item], left = 0, right = 0)[::-1]
-    #     advected_mask.append(mask_val)
+        row_val = np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan, period = 360)[::-1]
 
-    # advected_rows = np.asarray(advected_rows)
-    # advected_mask = np.asarray(advected_mask)
+        advected_rows.append(row_val)
 
-    # advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
-    # advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
+
+        mask_val = np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0, period = 360)[::-1]
+        advected_mask.append(mask_val)
+
+    advected_rows = np.asarray(advected_rows)
+    advected_mask = np.asarray(advected_mask)
+
+    advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
+    advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
     
 
 
-    # hdul[0].data = advected_rows
-    # hdul[1].data = advected_mask
-    # hdul[0].header['LON_LEFT'] = 360
-    # hdul[0].header['LON_RIGH'] =0
-    # hdul[0].header['LAT_TOP'] = 65
-    # hdul[0].header['LAT_BOT'] = -65
-    # hdul[0].header['NAXSI1'] = 2601
-    # hdul[0].header['NAXSI2'] =7201
+    hdul[0].data = advected_rows
+    hdul[1].data = advected_mask
+    hdul[0].header['LON_LEFT'] = 360
+    hdul[0].header['LON_RIGH'] =0
+    hdul[0].header['LAT_TOP'] = 65
+    hdul[0].header['LAT_BOT'] = -65
+    hdul[0].header['NAXSI1'] = 2601
+    hdul[0].header['NAXSI2'] =7201
 
 
-    # hdul.writeto(file,overwrite=True)
-    # file1.close()
-    # hdul.close()
+    hdul.writeto(file,overwrite=True)
+    file1.close()
+    hdul.close()
 print("done")
 
 # test_target = './advected_data/190409_631_0833_reg_trim.fits'
