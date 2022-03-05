@@ -2,9 +2,26 @@ from zonalwind import *
 
 from astropy.io import fits
 
-def inputSortHelper(LonList):
-    temp = np.mod(LonList, 360)
-    return np.sort(temp)
+def inputSortHelper(full_deg, LonList, bright, mask):
+    cover = np.nan
+    if mask:
+        cover = 0
+    Neg = None
+    for i in range(len(LonList)):
+        if LonList[i] < 0:
+            Neg = LonList[i:]
+            Pos = LonList[:i]
+            break
+
+    if Neg == None:
+        return np.interp(full_deg, LonList[::-1] , bright, left = cover, right = cover)[::-1]
+    else:
+         temp1 = np.interp(full_deg, Pos[::-1] , bright, left = cover, right = cover)[::-1]
+         Neg = np.mod(Neg, 360)
+         temp2 = np.interp(full_deg, Neg[::-1] , bright, left = cover, right = cover)[::-1]
+         return temp1 + temp2
+    
+
 
 
 path2data = './new_201904/'
@@ -63,14 +80,9 @@ for file in images:
 
     for item in range(0, len(result_lon)):
 
+        advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
 
-        row_val = np.interp(full_deg, inputSortHelper(result_lon[item]), temp[item], left = np.nan, right = np.nan)[::-1]
-
-        advected_rows.append(row_val)
-
-
-        mask_val = np.interp(full_deg, inputSortHelper(result_lon[item]), mask[item], left = 0, right = 0)[::-1]
-        advected_mask.append(mask_val)
+        advected_mask.append(inputSortHelper(full_deg, result_lon[item], mask[item], True))
 
     advected_rows = np.asarray(advected_rows)
     advected_mask = np.asarray(advected_mask)
