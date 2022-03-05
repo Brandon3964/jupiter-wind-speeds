@@ -11,14 +11,16 @@ def inputSortHelper(full_deg, LonList, bright, mask):
         if LonList[i] < 0:
             Neg = LonList[i:]
             Pos = LonList[:i]
+            brightNeg = bright[i:]
+            brightPos = bright[:i]
             break
 
     if Neg == []:
         return np.interp(full_deg, LonList[::-1] , bright, left = cover, right = cover)[::-1]
     else:
-         temp1 = np.interp(full_deg, Pos[::-1] , bright, left = cover, right = cover)[::-1]
+         temp1 = np.interp(full_deg, Pos[::-1] , brightPos, left = cover, right = cover)[::-1]
          Neg = np.mod(Neg, 360)
-         temp2 = np.interp(full_deg, Neg[::-1] , bright, left = cover, right = cover)[::-1]
+         temp2 = np.interp(full_deg, Neg[::-1] , brightNeg, left = cover, right = cover)[::-1]
          return temp1 + temp2
     
 
