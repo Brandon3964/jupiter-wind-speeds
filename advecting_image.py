@@ -1,6 +1,12 @@
 from zonalwind import *
 
 from astropy.io import fits
+
+def inputSortHelper(LonList):
+    temp = np.mod(LonList, 360)
+    return np.sort(temp)
+
+
 path2data = './new_201904/'
 path2advected = './advected_data/'
 images = glob.glob(path2advected + '*.fits')
@@ -36,8 +42,7 @@ for file in images:
     for pair in velocity_tuple:
         y = geographic2pixel(advected_target, 0, pair[0])
         result_lon.append(advection(file, advected_target, y[1], pair[1])[0])
-        if pair[0] == 15:
-            print(advection(file, advected_target, y[1], pair[1])[0])
+    print(result_lon)
 
 
 
@@ -59,12 +64,12 @@ for file in images:
     for item in range(0, len(result_lon)):
 
 
-        row_val = np.interp(full_deg, result_lon[item][::-1], temp[item], left = np.nan, right = np.nan, period = 360)[::-1]
+        row_val = np.interp(full_deg, inputSortHelper(result_lon[item]), temp[item], left = np.nan, right = np.nan)[::-1]
 
         advected_rows.append(row_val)
 
 
-        mask_val = np.interp(full_deg, result_lon[item][::-1], mask[item], left = 0, right = 0, period = 360)[::-1]
+        mask_val = np.interp(full_deg, inputSortHelper(result_lon[item]), mask[item], left = 0, right = 0)[::-1]
         advected_mask.append(mask_val)
 
     advected_rows = np.asarray(advected_rows)
@@ -120,5 +125,6 @@ print("done")
 # hdul.writeto(test_target,overwrite=True)
 
 # hdul.close()
+# 
 
 
