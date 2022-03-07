@@ -140,7 +140,7 @@ def overlap_slice(slice1, slice2):
     else:
         overlap = [lon_left_1, lon_right_1] #in this case both slices are the same
 
-    #print(overlap)
+    print(overlap)
     return overlap
 
 def overlap_all(lat, v, path2data='./'):
@@ -165,7 +165,7 @@ def overlap_all(lat, v, path2data='./'):
         images2 = images[x:]
         for j in images2:
             #Filter out pairs w/ time difference of less than 5 hrs or more than 15 hrs
-            if abs(time_difference(i, j)) < 18000 or abs(time_difference(i, j)) > 54000:
+            if abs(time_difference(i, j)) < 10800 or abs(time_difference(i, j)) > 108000:
                 continue
             #Advect one img to the other, and determine whether they overlap
             hdulist2 = fits.open(j)
@@ -207,7 +207,7 @@ def time_difference(img1, img2):
     else: #repeat for final case where dates are the same
         diff1 = (hours1 * 3600) + (mins1 * 60) + secs1
         diff2 = (hours2 * 3600) + (mins2 * 60) + secs2
-        
+
     return diff2 - diff1 #return time difference in seconds
 
 def advection(img1, img2, y, v): 
@@ -302,6 +302,7 @@ def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
         #get data pixel values
         overlap = overlaps[i, :]
         N = np.arange((overlap[0]/lon_step + 1) * lon_step, (overlap[-1]/lon_step - 1) * lon_step, lon_step) #get full overlap range (excluding endpoints)
+        print(overlap)
         slice1, slice2 = hdulist1[0].data[y - i + rows//2, :], hdulist2[0].data[y - i + rows//2, :] #get corresponding data entries (NOT PIXELS) from img1, img2
         mask1, mask2 = hdulist1[1].data[y - i + rows//2, :], hdulist2[1].data[y - i + rows//2, :] #get corresponding data entries (NOT PIXELS) from mask1, mask2
         '''nan filter for debugging on untrimmed files. arrays above must be NumPy arrays for idx and idy to work. order of idx/idy shouldn't matter.
@@ -331,6 +332,7 @@ def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
         #interpolate the slices onto the overlap grid to get final brightness values
         slice1_brightness = np.flip(np.interp(np.flip(N), np.flip(slice1_lon), np.flip(slice1)))
         slice2_brightness = np.flip(np.interp(np.flip(N), np.flip(slice2_lon), np.flip(slice2)))
+
         #filter out to get pixels where masks for both images have value of 1
         slice1_masking = np.flip(np.interp(np.flip(N), np.flip(slice1_lon), np.flip(mask1)))
         slice2_masking = np.flip(np.interp(np.flip(N), np.flip(slice2_lon), np.flip(mask2)))
@@ -339,6 +341,7 @@ def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
         slice1_masked, slice2_masked = slice1_brightness[mask_filter], slice2_brightness[mask_filter]
                 
         #compute correlation from resulting arrays
+
         correlation = row_correlation(slice1_masked, slice2_masked)
         total_correlation += correlation
     
@@ -451,5 +454,5 @@ def v_maxcorr(lat, path2data=None, plotting=False, vstep=37):
 
     #sum over all image pair correlations for each velocity; return the velocity with the highest correlation
     return vel_array[np.argmax(np.nansum(correlations, axis=0))]
-    #return vel_array, np.nansum(correlations, axis=0)
+    #return (vel_array, np.nansum(correlations, axis=0))
 
