@@ -62,7 +62,9 @@ for file in images:
     for pair in velocity_tuple:
         y = geographic2pixel(advected_target, 0, pair[0])
         result_lon.append(advection(file, advected_target, y[1], pair[1])[0])
-    print(result_lon)
+
+    for item in range(0, len(result_lon)):
+        print(result_lon[item])
 
 
 
