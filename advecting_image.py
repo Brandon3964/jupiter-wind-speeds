@@ -2,7 +2,7 @@ from zonalwind import *
 
 from astropy.io import fits
 
-def inputSortHelper(full_deg, LonList, bright, mask):
+def inputSortHelper(full_deg, LonList, bright, mask = False):
     cover = np.nan
     if mask:
         cover = 0
@@ -15,14 +15,15 @@ def inputSortHelper(full_deg, LonList, bright, mask):
             brightPos = bright[:i]
             break
 
-    if Neg == []:
+    if Neg.size == 0:
         return np.interp(full_deg, LonList[::-1] , bright, left = cover, right = cover)[::-1]
     else:
-         temp1 = np.interp(full_deg, Pos[::-1] , brightPos, left = cover, right = cover)[::-1]
-         Neg = np.mod(Neg, 360)
-         temp2 = np.interp(full_deg, Neg[::-1] , brightNeg, left = cover, right = cover)[::-1]
-         return temp1 + temp2
-    
+        print(Neg)
+        print(Pos)
+        temp1 = np.interp(full_deg, Pos[::-1] , brightPos, left = cover, right = cover)[::-1]
+        Neg = np.mod(Neg, 360)
+        temp2 = np.interp(full_deg, Neg[::-1] , brightNeg, left = cover, right = cover)[::-1]
+        return temp1.append(temp2)
 
 
 
@@ -61,54 +62,68 @@ for file in images:
     for pair in velocity_tuple:
         y = geographic2pixel(advected_target, 0, pair[0])
         result_lon.append(advection(file, advected_target, y[1], pair[1])[0])
+    print(result_lon)
 
 
 
 
 
-    # for line in file1:
-    #     temp2 = (line.strip()).split()
-    #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
-    #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
+#     # for line in file1:
+#     #     temp2 = (line.strip()).split()
+#     #     y = geographic2pixel(advected_target, 0, float(temp2[0]))
+#     #     result_lon.append(advection(file, advected_target, y[1], float(temp2[1]))[0])
 
-    advected_rows = []
-    advected_mask = []
-    full_deg = []
-    start = 360
-    while start > 0:
-        start = round(start, 2)
-        full_deg.append(start)
-        start -= 0.05
+#     advected_rows = []
+#     advected_mask = []
+#     full_deg = []
+#     start = 360
+#     while start > 0:
+#         start = round(start, 2)
+#         full_deg.append(start)
+#         start -= 0.05
 
-    for item in range(0, len(result_lon)):
+#     for item in range(0, len(result_lon)):
 
 
-        advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
+#         advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
 
-        advected_mask.append(inputSortHelper(full_deg, result_lon[item], mask[item], True))
+#         advected_mask.append(inputSortHelper(full_deg, result_lon[item], mask[item], True))
 
-    advected_rows = np.asarray(advected_rows)
-    advected_mask = np.asarray(advected_mask)
+#     advected_rows = np.asarray(advected_rows)
+#     advected_mask = np.asarray(advected_mask)
 
-    advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
-    advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
+#     advected_rows = np.hstack((advected_rows, advected_rows[:,-1:]))
+#     advected_mask = np.hstack((advected_mask, advected_mask[:,-1:]))
     
 
 
-    hdul[0].data = advected_rows
-    hdul[1].data = advected_mask
-    hdul[0].header['LON_LEFT'] = 360
-    hdul[0].header['LON_RIGH'] =0
-    hdul[0].header['LAT_TOP'] = 65
-    hdul[0].header['LAT_BOT'] = -65
-    hdul[0].header['NAXSI1'] = 2601
-    hdul[0].header['NAXSI2'] =7201
+#     hdul[0].data = advected_rows
+#     hdul[1].data = advected_mask
+#     hdul[0].header['LON_LEFT'] = 360
+#     hdul[0].header['LON_RIGH'] =0
+#     hdul[0].header['LAT_TOP'] = 65
+#     hdul[0].header['LAT_BOT'] = -65
+#     hdul[0].header['NAXSI1'] = 2601
+#     hdul[0].header['NAXSI2'] =7201
 
 
-    hdul.writeto(file,overwrite=True)
-    file1.close()
-    hdul.close()
-print("done")
+#     hdul.writeto(file,overwrite=True)
+#     file1.close()
+#     hdul.close()
+# print("done")
+
+
+# bright = fits.open("./new_201904/190409_631_0833_reg_trim.fits")[0].data[1400]
+# lon = np.arange(-30, 50.05, 0.05)
+# lon[lon>0] = 360 - lon[lon>0]
+
+# inputSortHelper(np.arange(360, 0, 0.05), lon, bright)
+
+
+
+
+
+
 
 # test_target = './advected_data/190409_631_0833_reg_trim.fits'
 
