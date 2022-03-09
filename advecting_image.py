@@ -81,7 +81,7 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(interpolate.interp1d(full_deg, result_lon[item] , temp[item], fill_value = np.nan, assume_sorted = False))
+        advected_rows.append(interpolate.interp1d(temp[item], result_lon[item], axis = full_deg, fill_value = np.nan, assume_sorted = False))
 
         # advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
 
