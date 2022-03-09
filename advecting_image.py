@@ -1,5 +1,5 @@
 from zonalwind import *
-from scipy import interpolate
+
 from astropy.io import fits
 
 def inputSortHelper(full_deg, LonList, bright, mask):
@@ -81,11 +81,11 @@ for file in images:
         start -= 0.05
 
     for item in range(0, len(result_lon)):
-        advected_rows.append(interpolate.interp1d(result_lon[item], temp[item], fill_value = np.nan, assume_sorted = False))
 
-        # advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
 
-        # advected_mask.append(inputSortHelper(full_deg, result_lon[item], mask[item], True))
+        advected_rows.append(inputSortHelper(full_deg, result_lon[item], temp[item], False))
+
+        advected_mask.append(inputSortHelper(full_deg, result_lon[item], mask[item], True))
 
     advected_rows = np.asarray(advected_rows)
     advected_mask = np.asarray(advected_mask)
