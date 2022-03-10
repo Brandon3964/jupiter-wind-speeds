@@ -140,7 +140,7 @@ def overlap_slice(slice1, slice2):
     else:
         overlap = [lon_left_1, lon_right_1] #in this case both slices are the same
 
-    print(overlap)
+    #print(overlap)
     return overlap
 
 def overlap_all(lat, v, path2data='./'):
@@ -302,7 +302,7 @@ def averaging_correlation_img_pair(lat, v, img1, img2, N=5):
         #get data pixel values
         overlap = overlaps[i, :]
         N = np.arange((overlap[0]/lon_step + 1) * lon_step, (overlap[-1]/lon_step - 1) * lon_step, lon_step) #get full overlap range (excluding endpoints)
-        print(overlap)
+        #print(overlap)
         slice1, slice2 = hdulist1[0].data[y - i + rows//2, :], hdulist2[0].data[y - i + rows//2, :] #get corresponding data entries (NOT PIXELS) from img1, img2
         mask1, mask2 = hdulist1[1].data[y - i + rows//2, :], hdulist2[1].data[y - i + rows//2, :] #get corresponding data entries (NOT PIXELS) from mask1, mask2
         '''nan filter for debugging on untrimmed files. arrays above must be NumPy arrays for idx and idy to work. order of idx/idy shouldn't matter.
