@@ -1,7 +1,7 @@
 from zonalwind import *
 start_time = time()
 ray.init()
-path2data = './201906_OPALj2019/'
+path2data = './202007/'
 
 
 
@@ -18,29 +18,31 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 
 #Generate an array of latitudes (pixels) and best velocities (m/s). 
 
-#for lat in latitude:
+
 lats = []
-start = -65
-while start < 65:
+start = -34
+while start < -33:
     lats.append(round(start, 1))
-    start += 0.1
+    start += 0.5
 v_corr = np.zeros_like(latitude)*np.nan
 obj_list = []
 for lat in lats:
-    try:
-        obj_list.append(v_maxcorr.remote(lat, path2data=path2data, plotting=False, vstep=361))
-    except:
-        print("error at ", lat)
+    # try:
+    obj_list.append(v_maxcorr.remote(lat, path2data=path2data, plotting=False, vstep=361))
+    # except:
+    #     print("error at ", lat)
 
 print("Latitude", " Velocity")
 for result in range(len(lats)):
     cur_lat = lats[result]
-    try:
-        result_v = ray.get(obj_list[result])
-        print(cur_lat, " ", result_v)
+    # try:
+    result_v = ray.get(obj_list[result])
+    print(cur_lat, " ", result_v)
         #v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
-    except:
-        print("error at ", cur_lat)
+    # except:
+    #     print("error at ", cur_lat)
+
+
 
 
 
