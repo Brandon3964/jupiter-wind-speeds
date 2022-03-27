@@ -39,7 +39,8 @@ for lat in lats:
         f.write("error at " + str(lat))
 
 
-f.write("#Latitude Velocity")
+f.write("#Latitude Velocity\n")
+
 #Get the velocity from the ray object
 for result in range(len(lats)):
     cur_lat = lats[result]
