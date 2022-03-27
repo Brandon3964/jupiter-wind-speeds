@@ -1,6 +1,8 @@
 from zonalwind import *
 start_time = time()
 ray.init()
+
+#This is the path to the data
 path2data = './202007/'
 
 
@@ -14,33 +16,36 @@ hdulist = fits.open(image1)
 lat_bot, lat_top, lat_step = hdulist[0].header['LAT_BOT'], hdulist[0].header['LAT_TOP'], hdulist[0].header['LAT_STEP']
 latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 
-# Caveat, this only works if all the images have the same latitude cut off 
-
-#Generate an array of latitudes (pixels) and best velocities (m/s). 
 
 
+# This sets the latitude range and step the the resulting velocity profile.
 lats = []
-start = -34
-while start < -33:
-    lats.append(round(start, 1))
-    start += 0.5
+start = -65
+end = 65
+step = 0.5
+
+lats = np.arange(start, end, step)
 v_corr = np.zeros_like(latitude)*np.nan
+
+# Gets all the ray object for each latitude.
 obj_list = []
 for lat in lats:
-    # try:
-    obj_list.append(v_maxcorr.remote(lat, path2data=path2data, plotting=False, vstep=361))
-    # except:
-    #     print("error at ", lat)
+    try:
+        obj_list.append(v_maxcorr.remote(lat, path2data=path2data, plotting=False, vstep=361))
+    except:
+        print("error at ", lat)
 
 print("Latitude", " Velocity")
+
+#Get the velocity from the ray object
 for result in range(len(lats)):
     cur_lat = lats[result]
-    # try:
-    result_v = ray.get(obj_list[result])
-    print(cur_lat, " ", result_v)
+    try:
+        result_v = ray.get(obj_list[result])
+        print(cur_lat, " ", result_v)
         #v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
-    # except:
-    #     print("error at ", cur_lat)
+    except:
+        print("error at ", cur_lat)
 
 
 
