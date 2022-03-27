@@ -5,7 +5,10 @@ ray.init()
 #This is the path to the data
 path2data = './202007/'
 
+# This is the path to where you want to store the result
+path2Result = './202007_result_file.txt'
 
+f = open(path2Result, 'w')
 
 
 
@@ -33,26 +36,28 @@ for lat in lats:
     try:
         obj_list.append(v_maxcorr.remote(lat, path2data=path2data, plotting=False, vstep=361))
     except:
-        print("error at ", lat)
+        f.write("error at " + str(lat))
 
-print("Latitude", " Velocity")
 
+f.write("#Latitude Velocity")
 #Get the velocity from the ray object
 for result in range(len(lats)):
     cur_lat = lats[result]
     try:
         result_v = ray.get(obj_list[result])
-        print(cur_lat, " ", result_v)
+        tempStr = str(cur_lat) + " " + str(result_v) + "\n"
+        f.write(tempStr)
         #v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
     except:
-        print("error at ", cur_lat)
+        f.write("error at " + str(cur_lat))
 
 
 
 
 
 end = time()
-print("Program Runtime ", end - start_time)
+f.write("#program Runtime" + str(end - start_time))
+f.close()
 #Plot results along with currently accepted ZWP to compare. 
 # path2wp = path2data + 'ZWP_j2016_PJ03.txt'
 # lat_zwp, zwp = readZWP(path2wp) 
