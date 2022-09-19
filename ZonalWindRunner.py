@@ -3,10 +3,10 @@ start_time = time()
 ray.init()
 
 #This is the path to the data
-path2data = './202007/'
+path2data = './202009/flipped_normal/'
 
 # This is the path to where you want to store the result
-path2Result = './202007_result_file.txt'
+path2Result = './test_custom_flip.txt'
 
 f = open(path2Result, 'w')
 
@@ -23,12 +23,14 @@ latitude = np.linspace(lat_bot, lat_top, int((lat_top - lat_bot)/lat_step) + 1)
 
 # This sets the latitude range and step the the resulting velocity profile.
 lats = []
-start = -65
-end = 65
-step = 0.5
+start = 25
+end = 26
+step = 0.05
 
-lats = np.arange(start, end, step)
+#round the result to 2 decimal for 0.05 to avoid python floating error
+lats = np.round(np.arange(start, end, step), 2)
 v_corr = np.zeros_like(latitude)*np.nan
+
 
 # Gets all the ray object for each latitude.
 obj_list = []
@@ -48,6 +50,7 @@ for result in range(len(lats)):
         result_v = ray.get(obj_list[result])
         tempStr = str(cur_lat) + " " + str(result_v) + "\n"
         f.write(tempStr)
+        print(tempStr)
         #v_corr[np.where(cur_lat == np.around(latitude,2))] = result_v 
     except:
         f.write("error at " + str(cur_lat))
